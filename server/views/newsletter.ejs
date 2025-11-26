@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Einayim L'Torah - <%= metadata.parsha %></title>
+  <link rel="stylesheet" href="/css/newsletter.css">
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div class="header-top">Vol. <%= metadata.volume || '1' %> | Issue <%= metadata.issue || '1' %> | <%= metadata.parsha %> <%= metadata.year || '5786' %></div>
+      <h1 class="title">Einayim L'Torah</h1>
+      <div class="subtitle">A weekly Torah publication by and for the talmidim of YU</div>
+    </div>
+
+    <div class="sidebar">
+      <h3>In this publication you can expect:</h3>
+      <% Object.keys(articles).forEach(key => {
+        const article = articles[key];
+        if (article.content && article.content.trim()) { %>
+          <div class="sidebar-item"><%= article.title %> | page <%= article.page || '1' %></div>
+        <% }
+      }); %>
+    </div>
+
+    <div class="content">
+      <%
+      const articleOrder = [
+        { key: 'roshei_yeshiva', title: 'From the Roshei Yeshiva:', defaultAuthor: 'Rabbi Daniel Stein' },
+        { key: 'student_dvar', title: 'Student Dvar Torah:', defaultAuthor: '' },
+        { key: 'sichos_mussar', title: 'Sichos Mussar:', defaultAuthor: 'Rabbi Yaakov Feit' },
+        { key: 'halacha_corner', title: 'Halacha Corner:', defaultAuthor: 'Rabbi Aryeh Lebowitz' },
+        { key: 'shiur_yomi', title: 'From the Shiur Yomi of:', defaultAuthor: 'Rabbi Elchanan Adler' },
+        { key: 'min_hamesorah', title: 'Min HaMesorah:', defaultAuthor: 'Rabbi Dr. Samuel Belkin' }
+      ];
+
+      articleOrder.forEach(({ key, title, defaultAuthor }) => {
+        const article = articles[key];
+        if (article && article.content && article.content.trim()) {
+          const author = article.author || defaultAuthor;
+      %>
+          <div class="article">
+            <div class="article-title"><%= title %></div>
+            <% if (author) { %>
+              <div class="article-author"><%= author %></div>
+            <% } %>
+            <div class="article-content">
+              <%- article.formattedContent %>
+            </div>
+          </div>
+      <%
+        }
+      });
+      %>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<%- include('partials/header') %>
+
+    <div class="form-container">
+      <form id="newsletterForm">
+        <!-- Metadata Section -->
+        <div class="section">
+          <h2>Newsletter Information</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="volume">Volume</label>
+              <input type="text" id="volume" name="volume" placeholder="1" value="1">
+            </div>
+            <div class="form-group">
+              <label for="issue">Issue</label>
+              <input type="text" id="issue" name="issue" placeholder="6" value="6">
+            </div>
+            <div class="form-group">
+              <label for="parsha">Parsha</label>
+              <input type="text" id="parsha" name="parsha" placeholder="Lech Lecha" required>
+            </div>
+            <div class="form-group">
+              <label for="year">Year</label>
+              <input type="text" id="year" name="year" placeholder="5786" value="5786">
+            </div>
+          </div>
+        </div>
+
+        <!-- Formatting Help -->
+        <div class="section">
+          <h2>Formatting Guide</h2>
+          <div class="format-help">
+            <p><strong>How to format your text:</strong></p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+              <li><code>**Bold text**</code> for <strong>bold</strong></li>
+              <li><code>*Italic text*</code> for <em>italic</em></li>
+              <li><code>__Underlined text__</code> for <u>underline</u></li>
+              <li><code>***Bold and Italic***</code> for <strong><em>both</em></strong></li>
+              <li>Use double line breaks for new paragraphs</li>
+            </ul>
+            <p style="margin-top: 10px;"><em>Note: You can also paste directly from Google Docs and manually add formatting markers.</em></p>
+          </div>
+        </div>
+
+        <!-- Articles Section -->
+        <div class="section">
+          <h2>Articles</h2>
+
+          <!-- Roshei Yeshiva Article -->
+          <div class="article-section">
+            <h3>From the Roshei Yeshiva</h3>
+            <div class="form-group">
+              <label for="roshei_yeshiva_author">Author (optional - defaults to Rabbi Daniel Stein)</label>
+              <input type="text" id="roshei_yeshiva_author" name="roshei_yeshiva_author" placeholder="Rabbi Daniel Stein">
+            </div>
+            <div class="form-group">
+              <label for="roshei_yeshiva_content">Article Content</label>
+              <textarea id="roshei_yeshiva_content" name="roshei_yeshiva_content" placeholder="Paste article content here..."></textarea>
+            </div>
+          </div>
+
+          <!-- Student Dvar Torah -->
+          <div class="article-section">
+            <h3>Student Dvar Torah</h3>
+            <div class="form-group">
+              <label for="student_dvar_author">Author (required for this section)</label>
+              <input type="text" id="student_dvar_author" name="student_dvar_author" placeholder="Student Name">
+            </div>
+            <div class="form-group">
+              <label for="student_dvar_content">Article Content</label>
+              <textarea id="student_dvar_content" name="student_dvar_content" placeholder="Paste article content here..."></textarea>
+            </div>
+          </div>
+
+          <!-- Sichos Mussar -->
+          <div class="article-section">
+            <h3>Sichos Mussar</h3>
+            <div class="form-group">
+              <label for="sichos_mussar_author">Author (optional - defaults to Rabbi Yaakov Feit)</label>
+              <input type="text" id="sichos_mussar_author" name="sichos_mussar_author" placeholder="Rabbi Yaakov Feit">
+            </div>
+            <div class="form-group">
+              <label for="sichos_mussar_content">Article Content</label>
+              <textarea id="sichos_mussar_content" name="sichos_mussar_content" placeholder="Paste article content here..."></textarea>
+            </div>
+          </div>
+
+          <!-- Halacha Corner -->
+          <div class="article-section">
+            <h3>Halacha Corner</h3>
+            <div class="form-group">
+              <label for="halacha_corner_author">Author (optional - defaults to Rabbi Aryeh Lebowitz)</label>
+              <input type="text" id="halacha_corner_author" name="halacha_corner_author" placeholder="Rabbi Aryeh Lebowitz">
+            </div>
+            <div class="form-group">
+              <label for="halacha_corner_content">Article Content</label>
+              <textarea id="halacha_corner_content" name="halacha_corner_content" placeholder="Paste article content here..."></textarea>
+            </div>
+          </div>
+
+          <!-- Shiur Yomi -->
+          <div class="article-section">
+            <h3>From the Shiur Yomi of</h3>
+            <div class="form-group">
+              <label for="shiur_yomi_author">Author (optional - defaults to Rabbi Elchanan Adler)</label>
+              <input type="text" id="shiur_yomi_author" name="shiur_yomi_author" placeholder="Rabbi Elchanan Adler">
+            </div>
+            <div class="form-group">
+              <label for="shiur_yomi_content">Article Content</label>
+              <textarea id="shiur_yomi_content" name="shiur_yomi_content" placeholder="Paste article content here..."></textarea>
+            </div>
+          </div>
+
+          <!-- Min HaMesorah -->
+          <div class="article-section">
+            <h3>Min HaMesorah</h3>
+            <div class="form-group">
+              <label for="min_hamesorah_author">Author (optional - defaults to current featured rabbi)</label>
+              <input type="text" id="min_hamesorah_author" name="min_hamesorah_author" placeholder="Rabbi Dr. Samuel Belkin">
+            </div>
+            <div class="form-group">
+              <label for="min_hamesorah_content">Article Content</label>
+              <textarea id="min_hamesorah_content" name="min_hamesorah_content" placeholder="Paste article content here..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="btn-container">
+          <button type="submit" class="btn-print" id="printBtn">Generate PDF</button>
+          <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Generating your newsletter PDF...</p>
+          </div>
+          <div class="success-message" id="successMessage">
+            PDF generated successfully! Your download should start automatically.
+          </div>
+          <div class="error-message" id="errorMessage">
+            Error generating PDF. Please try again.
+          </div>
+        </div>
+      </form>
+    </div>
+
+<%- include('partials/footer') %>

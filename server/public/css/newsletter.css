@@ -1,0 +1,169 @@
+/* Newsletter PDF Styles */
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 10pt;
+  line-height: 1.5;
+  color: #000;
+}
+
+.page {
+  width: 100%;
+  max-width: 8.5in;
+  margin: 0 auto;
+  background: white;
+}
+
+.header {
+  background: linear-gradient(135deg, #0a4a6b 0%, #1a7a9b 100%);
+  color: white;
+  padding: 30px 20px;
+  margin-bottom: 20px;
+  border-bottom: 4px solid #0a9eb5;
+}
+
+.header-top {
+  text-align: right;
+  font-size: 9pt;
+  margin-bottom: 10px;
+  color: #b3e5f0;
+}
+
+.title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 42pt;
+  font-weight: 700;
+  text-align: center;
+  margin: 10px 0;
+  letter-spacing: 2px;
+  color: white;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 12pt;
+  font-style: italic;
+  color: #b3e5f0;
+}
+
+.sidebar {
+  float: right;
+  width: 180px;
+  background: #e8f4f8;
+  border: 2px solid #0a9eb5;
+  padding: 15px;
+  margin: 0 0 20px 20px;
+  border-radius: 5px;
+}
+
+.sidebar h3 {
+  color: #0a4a6b;
+  font-size: 11pt;
+  text-align: center;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #0a9eb5;
+  padding-bottom: 5px;
+}
+
+.sidebar-item {
+  font-size: 9pt;
+  margin: 8px 0;
+  padding: 5px 0;
+  border-bottom: 1px solid #b3d9e5;
+}
+
+.content {
+  column-count: 2;
+  column-gap: 30px;
+  column-rule: 1px solid #ddd;
+  text-align: justify;
+  padding: 0 20px;
+}
+
+.article {
+  break-inside: avoid;
+  margin-bottom: 20px;
+}
+
+.article-title {
+  font-size: 14pt;
+  font-weight: 700;
+  color: #0a4a6b;
+  margin-bottom: 5px;
+  border-bottom: 2px solid #0a9eb5;
+  padding-bottom: 5px;
+}
+
+.article-author {
+  font-size: 12pt;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.article-content {
+  font-size: 10pt;
+  line-height: 1.6;
+}
+
+.article-content p {
+  margin-bottom: 8px;
+  text-indent: 15px;
+}
+
+.article-content p:first-child {
+  text-indent: 0;
+}
+
+.author-image {
+  width: 80px;
+  height: 80px;
+  float: right;
+  margin: 0 0 10px 10px;
+  border: 2px solid #0a9eb5;
+}
+
+.label {
+  background: #0a9eb5;
+  color: white;
+  padding: 2px 8px;
+  font-size: 8pt;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 700;
+}
+
+u {
+  text-decoration: underline;
+}
+
+.continued {
+  font-size: 9pt;
+  font-style: italic;
+  color: #666;
+  margin-top: 5px;
+}
+
+.page-number {
+  position: fixed;
+  bottom: 20px;
+  right: 40px;
+  font-size: 9pt;
+  color: #666;
+}
