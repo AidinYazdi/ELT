@@ -1,6 +1,6 @@
-# Einayim L'Torah Newsletter Generator
+# Einayim LaTorah Newsletter Generator
 
-A web application for generating the Einayim L'Torah weekly newsletter in PDF format.
+A web application for generating the Einayim LaTorah weekly newsletter in PDF format.
 
 ## Features
 

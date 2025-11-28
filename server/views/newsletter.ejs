@@ -1,59 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Einayim L'Torah - <%= metadata.parsha %></title>
-  <link rel="stylesheet" href="/css/newsletter.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Einayim LaTorah - <%= metadata.parsha %></title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/newsletter.css" />
 </head>
+
 <body>
+  <!-- Print Controls (hidden when printing) -->
+  <div class="print-controls no-print">
+    <button onclick="window.print()" class="btn-print-page">
+      🖨️ Print Newsletter
+    </button>
+  </div>
   <div class="page">
     <div class="header">
-      <div class="header-top">Vol. <%= metadata.volume || '1' %> | Issue <%= metadata.issue || '1' %> | <%= metadata.parsha %> <%= metadata.year || '5786' %></div>
-      <h1 class="title">Einayim L'Torah</h1>
-      <div class="subtitle">A weekly Torah publication by and for the talmidim of YU</div>
+      <div class="header-top">
+        Vol. <%= metadata.volume || '1' %> | Issue <%= metadata.issue || '1'
+          %> | <%= metadata.parsha %> <%= metadata.year || '5786' %>
+      </div>
+      <h1 class="title">Einayim LaTorah</h1>
+      <div class="subtitle">
+        A weekly Torah publication by and for the talmidim of YU
+      </div>
     </div>
 
-    <div class="sidebar">
-      <h3>In this publication you can expect:</h3>
-      <% Object.keys(articles).forEach(key => {
-        const article = articles[key];
-        if (article.content && article.content.trim()) { %>
-          <div class="sidebar-item"><%= article.title %> | page <%= article.page || '1' %></div>
-        <% }
-      }); %>
-    </div>
+
 
     <div class="content">
       <%
-      const articleOrder = [
-        { key: 'roshei_yeshiva', title: 'From the Roshei Yeshiva:', defaultAuthor: 'Rabbi Daniel Stein' },
-        { key: 'student_dvar', title: 'Student Dvar Torah:', defaultAuthor: '' },
-        { key: 'sichos_mussar', title: 'Sichos Mussar:', defaultAuthor: 'Rabbi Yaakov Feit' },
-        { key: 'halacha_corner', title: 'Halacha Corner:', defaultAuthor: 'Rabbi Aryeh Lebowitz' },
-        { key: 'shiur_yomi', title: 'From the Shiur Yomi of:', defaultAuthor: 'Rabbi Elchanan Adler' },
-        { key: 'min_hamesorah', title: 'Min HaMesorah:', defaultAuthor: 'Rabbi Dr. Samuel Belkin' }
-      ];
-
-      articleOrder.forEach(({ key, title, defaultAuthor }) => {
-        const article = articles[key];
-        if (article && article.content && article.content.trim()) {
-          const author = article.author || defaultAuthor;
+        const articleOrder = [
+          { key: 'roshei_yeshiva', title: 'From the Roshei Yeshiva:', defaultAuthor: 'Rabbi 1' },
+          { key: 'student_dvar', title: 'Student Dvar Torah:', defaultAuthor: 'Student Name' },
+          { key: 'sichos_mussar', title: 'Sichos Mussar:', defaultAuthor: 'Rabbi 2' },
+          { key: 'halacha_corner', title: 'Halacha Corner:', defaultAuthor: 'Rabbi 3' },
+          { key: 'shiur_yomi', title: 'From the Shiur Yomi of:', defaultAuthor: 'Rabbi 4' },
+          { key: 'min_hamesorah', title: 'Min HaMesorah:', defaultAuthor: 'Rabbi 5' }
+        ];
+        articleOrder.forEach(({ key, title, defaultAuthor }) => {
+          const article = articles[key];
+          if (article && article.content && article.content.trim()) {
+            const author = article.author || defaultAuthor;
+            // Determine photo source: use uploaded photo or default to RabbiReiss.png
+            const photoSrc = article.photoData || '/images/RabbiReiss.png';
+            // Only show photo for rabbi articles (not student dvar torah)
+            const showPhoto = key !== 'student_dvar' && author;
+            // the roshei yeshiva article is handled separately
+            if (key !== "roshei_yeshiva") {
       %>
-          <div class="article">
-            <div class="article-title"><%= title %></div>
-            <% if (author) { %>
-              <div class="article-author"><%= author %></div>
-            <% } %>
-            <div class="article-content">
-              <%- article.formattedContent %>
-            </div>
-          </div>
+      <div class="article">
+        <% if (showPhoto) { %>
+        <div class="rabbi-photo-container">
+          <img src="<%= photoSrc %>" alt="<%= author %>" class="rabbi-photo" />
+          <div class="rabbi-name-box"><%= author.toUpperCase() %></div>
+        </div>
+        <% } %>
+        <div class="article-title"><%= title %></div>
+        <% if (author && !showPhoto) { %>
+        <div class="article-author"><%= author %></div>
+        <% } %>
+        <div class="article-content"><%- article.formattedContent %></div>
+
+        <% if (key === 'min_hamesorah' && article.bio && article.bio.trim()) { %>
+        <div class="min-hamesorah-bio"><%- article.formattedBio %></div>
+        <% } %>
+      </div>
       <%
-        }
-      });
+            } else {
+              // this is the roshei yeshiva article
+      %>
+      <div class="row">
+        <div class="col-9">
+          <div class="article">
+            <% if (showPhoto) { %>
+            <div class="rabbi-photo-container">
+              <img src="<%= photoSrc %>" alt="<%= author %>" class="rabbi-photo" />
+              <div class="rabbi-name-box"><%= author.toUpperCase() %></div>
+            </div>
+            <% } %>
+            <div class="article-title"><%= title %></div>
+            <% if (author && !showPhoto) { %>
+            <div class="article-author"><%= author %></div>
+            <% } %>
+            <div class="article-content"><%- article.formattedContent %></div>
+
+            <% if (key === 'min_hamesorah' && article.bio && article.bio.trim()) { %>
+            <div class="min-hamesorah-bio"><%- article.formattedBio %></div>
+            <% } %>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="sidebar">
+            <h3>In this publication you can expect:</h3>
+            <%
+        Object.keys(articles).forEach(key => {
+          const article = articles[key];
+          if (article.content && article.content.trim()) {
+      %>
+            <div class="sidebar-item">
+              <%= article.title %> | page <%= article.page || '1' %>
+            </div>
+            <%
+          }
+        });
+      %>
+          </div>
+        </div>
+      </div>
+      <%
+            }
+          }
+        });
       %>
     </div>
+
+    <!-- Dedication Box -->
+    <% if (metadata.dedication && metadata.dedication.trim()) { %>
+    <div class="dedication-box"><%- metadata.formattedDedication %></div>
+    <% } %>
+
+    <!-- Footer -->
+    <div class="newsletter-footer">
+      <div class="footer-section qr-code-section">
+        <img src="/images/qr-code.svg" alt="QR Code" class="qr-code" />
+        <div class="qr-caption">Scan to view past issues</div>
+      </div>
+
+      <div class="footer-section staff-section">
+        <div class="footer-title">Einayim LaTorah Staff:</div>
+        <div class="staff-list">
+          <%=
+          metadata.staffList || 'Yosef Chaim Reiss, Ruben Prawer, Ori Bach, Akiva Kra, Netanel Lederer, Binyamin Blachman, Yonatan Benchluch, Gavi Bienstock, Shai Berman, Eli Blumenthal, Moshe Chaifetz, Akiva Englard, Elchanan Fixler, Moishe Fixler, Ezra Frazer, Isaac Goldberg, Yosef Greenfeld, Abe Greenstein, Binyomin Jeger, Shmuel Katz, Dovid Kramer, Moshe Kranzler, Hillel Kuttler, Eli Lerman, Dan Lesserson, Ariel Lewittes, Tzvi Lieberman, Yedidya Lieberman, Yosef Markin, Dovid Meisels, Moshe Ochs, Yoni Shteigman, Yoni Silberstein, Yishai Sklaar, Nadav Sklar, Ezra Spero, Ilan Sugarman, Yaakov Tauby, Yonatan Zimilover'
+          %>
+        </div>
+      </div>
+
+      <div class="footer-section contact-section">
+        <%-
+        metadata.formattedHaarahContact || '<p>Have a ha\' arah? Want to contribute to Einayim LaTorah?<br />Contact: Ruben Prawer: 516-477-4958, Yosef Chaim Reiss: 646-574-2165</p>'
+        %>
+      </div>
+    </div>
   </div>
+
+  <!-- Bootstrap JS Bundle (includes Popper) -->
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

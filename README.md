@@ -1,10 +1,10 @@
-# Einayim L'Torah Newsletter Generator
+# Einayim LaTorah Newsletter Generator
 
-A web-based application for generating the Einayim L'Torah weekly Torah newsletter in PDF format.
+A web-based application for generating the Einayim LaTorah weekly Torah newsletter in PDF format.
 
 ## Overview
 
-This application provides a simple web interface where contributors can paste their articles, apply text formatting, and generate a professionally formatted PDF newsletter that matches the Einayim L'Torah design.
+This application provides a simple web interface where contributors can paste their articles, apply text formatting, and generate a professionally formatted PDF newsletter that matches the Einayim LaTorah design.
 
 ## Features
 
@@ -75,4 +75,4 @@ This newsletter is by and for the talmidim of YU. Contributions are welcome!
 
 ## License
 
-Created for Einayim L'Torah - A weekly Torah publication by and for the talmidim of YU
+Created for Einayim LaTorah - A weekly Torah publication by and for the talmidim of YU

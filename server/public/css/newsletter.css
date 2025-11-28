@@ -1,5 +1,16 @@
-/* Newsletter PDF Styles */
+/* Newsletter Print Styles */
 @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+:root {
+  /* Background image fade controls */
+  --header-bg-opacity: 0.3; /* Controls overall background image opacity (0-1) */
+  --header-gradient-strength: 0.8; /* Controls fade to white at bottom (0-1, higher = more white) */
+
+  /* Color scheme - only three colors */
+  --blue: #3986ad;
+  --black: #000;
+  --white: #fff;
+}
 
 * {
   margin: 0;
@@ -11,29 +22,114 @@ body {
   font-family: 'Open Sans', Arial, sans-serif;
   font-size: 10pt;
   line-height: 1.5;
-  color: #000;
+  color: var(--black);
+  background: var(--white);
+  padding: 20px;
+}
+
+/* Print Controls */
+.print-controls {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-print-page,
+.btn-back {
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.btn-print-page {
+  background: var(--blue);
+  color: var(--white);
+}
+
+.btn-print-page:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(10, 74, 107, 0.4);
+}
+
+.btn-back {
+  background: var(--white);
+  color: var(--black);
+  border: 2px solid var(--blue);
+}
+
+.btn-back:hover {
+  background: var(--white);
+  border-color: var(--blue);
 }
 
 .page {
   width: 100%;
   max-width: 8.5in;
   margin: 0 auto;
-  background: white;
+  background: var(--white);
+  position: relative;
 }
 
 .header {
-  background: linear-gradient(135deg, #0a4a6b 0%, #1a7a9b 100%);
-  color: white;
+  position: relative;
+  color: var(--white);
   padding: 30px 20px;
-  margin-bottom: 20px;
-  border-bottom: 4px solid #0a9eb5;
+  margin: 0 -0.75in 20px -0.75in;
+  padding-left: 0.75in;
+  padding-right: 0.75in;
+  border-bottom: 4px solid var(--blue);
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/images/backgroundPhoto1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: var(--header-bg-opacity);
+  z-index: 0;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 74, 107, 0.6) 0%,
+    rgba(10, 74, 107, calc(0.7 - var(--header-gradient-strength) * 0.3)) 40%,
+    rgb(255, 255, 255, calc(var(--header-gradient-strength) * 0.9)) 100%
+  );
+  z-index: 1;
+}
+
+.header > * {
+  position: relative;
+  z-index: 2;
 }
 
 .header-top {
   text-align: right;
   font-size: 9pt;
   margin-bottom: 10px;
-  color: #b3e5f0;
+  color: var(--white);
 }
 
 .title {
@@ -43,32 +139,29 @@ body {
   text-align: center;
   margin: 10px 0;
   letter-spacing: 2px;
-  color: white;
+  color: var(--white);
 }
 
 .subtitle {
   text-align: center;
   font-size: 12pt;
   font-style: italic;
-  color: #b3e5f0;
+  color: var(--white);
 }
 
 .sidebar {
-  float: right;
-  width: 180px;
-  background: #e8f4f8;
-  border: 2px solid #0a9eb5;
+  background: var(--white);
+  border: 2px solid var(--blue);
   padding: 15px;
-  margin: 0 0 20px 20px;
   border-radius: 5px;
 }
 
 .sidebar h3 {
-  color: #0a4a6b;
+  color: var(--blue);
   font-size: 11pt;
   text-align: center;
   margin-bottom: 10px;
-  border-bottom: 2px solid #0a9eb5;
+  border-bottom: 2px solid var(--blue);
   padding-bottom: 5px;
 }
 
@@ -76,15 +169,11 @@ body {
   font-size: 9pt;
   margin: 8px 0;
   padding: 5px 0;
-  border-bottom: 1px solid #b3d9e5;
+  border-bottom: 1px solid var(--blue);
 }
 
 .content {
-  column-count: 2;
-  column-gap: 30px;
-  column-rule: 1px solid #ddd;
   text-align: justify;
-  padding: 0 20px;
 }
 
 .article {
@@ -95,17 +184,44 @@ body {
 .article-title {
   font-size: 14pt;
   font-weight: 700;
-  color: #0a4a6b;
+  color: var(--blue);
   margin-bottom: 5px;
-  border-bottom: 2px solid #0a9eb5;
+  border-bottom: 2px solid var(--blue);
   padding-bottom: 5px;
 }
 
 .article-author {
   font-size: 12pt;
   font-weight: 600;
-  color: #333;
+  color: var(--black);
   margin-bottom: 10px;
+}
+
+/* Rabbi Photo Container */
+.rabbi-photo-container {
+  text-align: center;
+  width: 150px;
+  margin-bottom: 15px;
+}
+
+.rabbi-photo {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border: 2px solid var(--blue);
+}
+
+.rabbi-name-box {
+  background: var(--blue);
+  color: var(--white);
+  padding: 8px 5px;
+  font-size: 9pt;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.5px;
+  margin-top: -2px;
 }
 
 .article-content {
@@ -125,14 +241,12 @@ body {
 .author-image {
   width: 80px;
   height: 80px;
-  float: right;
-  margin: 0 0 10px 10px;
-  border: 2px solid #0a9eb5;
+  border: 2px solid var(--blue);
 }
 
 .label {
-  background: #0a9eb5;
-  color: white;
+  background: var(--blue);
+  color: var(--white);
   padding: 2px 8px;
   font-size: 8pt;
   font-weight: 600;
@@ -156,7 +270,7 @@ u {
 .continued {
   font-size: 9pt;
   font-style: italic;
-  color: #666;
+  color: var(--black);
   margin-top: 5px;
 }
 
@@ -165,5 +279,174 @@ u {
   bottom: 20px;
   right: 40px;
   font-size: 9pt;
-  color: #666;
+  color: var(--black);
+}
+
+/* Min HaMesorah Biography */
+.min-hamesorah-bio {
+  margin-top: 15px;
+  padding: 10px;
+  background: var(--white);
+  border-left: 3px solid var(--blue);
+  font-size: 9pt;
+  font-style: italic;
+  color: var(--black);
+}
+
+.min-hamesorah-bio p {
+  text-indent: 0 !important;
+  margin-bottom: 5px;
+}
+
+/* Dedication Box */
+.dedication-box {
+  margin: 20px auto;
+  padding: 15px 20px;
+  background: var(--white);
+  border: 2px solid var(--blue);
+  border-radius: 5px;
+  text-align: center;
+  font-style: italic;
+  color: var(--blue);
+  max-width: 600px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.dedication-box p {
+  margin-bottom: 5px;
+  text-indent: 0 !important;
+}
+
+/* Newsletter Footer */
+.newsletter-footer {
+  margin-top: 30px;
+  padding: 20px;
+  background: var(--white);
+  border-top: 3px solid var(--blue);
+  clear: both;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.footer-section {
+  flex: 1;
+  text-align: center;
+}
+
+.qr-code-section {
+  text-align: center;
+}
+
+.qr-code {
+  width: 100px;
+  height: 100px;
+  border: 2px solid var(--blue);
+  padding: 5px;
+  background: var(--white);
+}
+
+.qr-caption {
+  margin-top: 5px;
+  font-size: 8pt;
+  color: var(--black);
+  font-style: italic;
+}
+
+.footer-title {
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--blue);
+  margin-bottom: 8px;
+}
+
+.staff-list {
+  font-size: 8pt;
+  line-height: 1.4;
+  color: var(--black);
+}
+
+.contact-section {
+  font-size: 9pt;
+  color: var(--black);
+}
+
+.contact-section p {
+  margin: 0;
+  text-indent: 0 !important;
+}
+
+/* Print Styles */
+@media print {
+  /* Hide screen-only elements */
+  .no-print,
+  .print-controls {
+    display: none !important;
+  }
+
+  /* Reset body for print */
+  body {
+    background: var(--white);
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Page setup */
+  @page {
+    size: letter;
+    margin: 0;
+  }
+
+  .page {
+    max-width: 100%;
+    margin: 0;
+    padding: 0.5in 0.75in;
+    box-shadow: none;
+  }
+
+  /* Header extends to edges, override page padding */
+  .header {
+    margin: -0.5in -0.75in 20px -0.75in;
+    padding: 30px 0.75in;
+  }
+
+  /* Remove any extra padding in content */
+  .content {
+    padding: 0;
+  }
+
+  /* Ensure colors print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Page breaks */
+  .article {
+    page-break-inside: avoid;
+  }
+
+  .header {
+    page-break-after: avoid;
+  }
+
+  /* Prevent breaking inside elements */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+
+  p {
+    page-break-inside: avoid;
+  }
+}
+
+/* Screen view - make it look like a paper */
+@media screen {
+  .page {
+    background: var(--white);
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    margin: 20px auto;
+    padding: 0.5in 0.75in;
+  }
 }

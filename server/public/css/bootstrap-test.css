@@ -1,0 +1,169 @@
+:root {
+  /* Background image fade controls */
+  --header-bg-opacity: 0.5; /* Controls overall background image opacity (0-1) */
+  --header-gradient-strength: 0.8; /* Controls fade to white at bottom (0-1, higher = more white) */
+
+  /* Color scheme - only three colors */
+  --blue: #3986ad;
+  --black: #000;
+  --white: #fff;
+}
+
+.header {
+  position: relative;
+  padding: 30px 20px;
+  min-height: 200px;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/images/background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: var(--header-bg-opacity);
+  z-index: 0;
+}
+
+.header > * {
+  position: relative;
+  z-index: 2;
+}
+
+.elt-card {
+  background-color: var(--blue);
+  color: var(--white);
+}
+
+/* Print Styles */
+@media print {
+  /* Force background images and colors to print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  .header::before {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Page setup */
+  @page {
+    size: letter;
+    margin: 0.75in;
+  }
+
+  /* Hide print header/footer elements on screen */
+  .print-page-header,
+  .print-page-footer {
+    display: none;
+  }
+
+  /* Print page header - repeats on every page except first */
+  .print-page-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid var(--blue);
+    padding: 0 0.75in;
+    background: var(--white);
+    z-index: 1000;
+    margin-bottom: 20px;
+  }
+
+  .print-page-header-card {
+    background-color: var(--blue);
+    color: var(--white);
+    padding: 5px 15px;
+    font-weight: bold;
+    font-size: 10pt;
+  }
+
+  /* Print page footer - repeats on every page */
+  .print-page-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.75in;
+    background: var(--white);
+    margin-top: 20px;
+  }
+
+  .print-page-footer hr {
+    flex-grow: 1;
+    border: none;
+    border-top: 1px solid var(--black);
+    margin: 0 40px;
+  }
+
+  .print-page-footer::after {
+    content: counter(page);
+    counter-increment: page;
+    font-size: 9pt;
+    color: var(--black);
+    position: absolute;
+    right: 0.75in;
+  }
+
+  /* Add spacing to body content to account for fixed header/footer */
+  body {
+    margin-top: 70px;
+    margin-bottom: 60px;
+  }
+
+  /* Hide header on first page - use a white overlay */
+  .header {
+    position: relative;
+    z-index: 1001;
+  }
+
+  /* Create a white box to cover the print header on page 1 */
+  .header::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background: var(--white);
+    z-index: 1000;
+  }
+}
+
+.ELT-blue {
+  color: var(--blue) !important;
+}
+
+/* Font Family Classes */
+.font-montserrat {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+/* Default body font */
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Two-column text flow */
+.two-columns {
+  column-count: 2;
+  column-gap: 30px;
+  text-align: justify;
+}

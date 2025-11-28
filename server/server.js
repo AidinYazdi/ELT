@@ -1,9 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const puppeteer = require('puppeteer');
+const multer = require('multer');
 const path = require('path');
-const fs = require('fs').promises;
-const ejs = require('ejs');
+const { processArticles, parseFormattedText } = require('./utils/formatting');
+const { generateLatexNewsletter, compileLatex } = require('./utils/latexGenerator');
 
 const app = express();
 const PORT = 3000;
@@ -12,109 +12,147 @@ const PORT = 3000;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+// Configure multer for file uploads (using memory storage for base64 conversion)
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
+});
+
 // Middleware
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.static('public'));
 
+// Serve Bootstrap from node_modules
+app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstrap/dist')));
+
 // Serve the main form
 app.get('/', (req, res) => {
-  res.render('index', { title: 'Einayim L\'Torah - Newsletter Generator' });
+  res.render('index', { title: 'Einayim LaTorah - Newsletter Generator' });
 });
 
-// Generate PDF endpoint
-app.post('/generate-pdf', async (req, res) => {
+// serve my testing bootstrap page
+app.get('/bootstrap-test', (req, res) => {
+  res.render('bootstrap-test');
+});
+
+// Generate newsletter preview
+app.post('/preview-newsletter', upload.any(), async (req, res) => {
   try {
-    const { metadata, articles } = req.body;
+    // Parse the JSON data from the form
+    const data = JSON.parse(req.body.data);
+    const { metadata, articles } = data;
+
+    // Process uploaded photos and add them to articles
+    if (req.files && req.files.length > 0) {
+      req.files.forEach(file => {
+        // Extract article key from field name (e.g., "roshei_yeshiva_photo" -> "roshei_yeshiva")
+        const articleKey = file.fieldname.replace('_photo', '');
+
+        if (articles[articleKey]) {
+          // Convert buffer to base64
+          const base64Image = file.buffer.toString('base64');
+          const mimeType = file.mimetype;
+          articles[articleKey].photoData = `data:${mimeType};base64,${base64Image}`;
+        }
+      });
+    }
 
     // Process articles and format content
     const processedArticles = processArticles(articles);
 
-    // Render the newsletter template to HTML
-    const html = await ejs.renderFile(
-      path.join(__dirname, 'views', 'newsletter.ejs'),
-      { metadata, articles: processedArticles }
-    );
+    // Process metadata fields (dedication and ha'arah contact)
+    const processedMetadata = {
+      ...metadata,
+      formattedDedication: parseFormattedText(metadata.dedication),
+      formattedHaarahContact: parseFormattedText(metadata.haarahContact)
+    };
 
-    // Create PDF using puppeteer
-    const browser = await puppeteer.launch({
-      headless: 'new',
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    // Render the newsletter template
+    res.render('newsletter', {
+      metadata: processedMetadata,
+      articles: processedArticles
     });
-
-    const page = await browser.newPage();
-
-    // Set the base URL so CSS can be loaded
-    await page.goto(`data:text/html,${encodeURIComponent(html)}`, {
-      waitUntil: 'networkidle0'
-    });
-
-    const pdfBuffer = await page.pdf({
-      format: 'Letter',
-      margin: {
-        top: '0.5in',
-        right: '0.75in',
-        bottom: '0.5in',
-        left: '0.75in'
-      },
-      printBackground: true
-    });
-
-    await browser.close();
-
-    // Save PDF to archives
-    const filename = `ELT_${metadata.parsha}_${Date.now()}.pdf`;
-    const filepath = path.join(__dirname, 'archives', filename);
-    await fs.writeFile(filepath, pdfBuffer);
-
-    // Send PDF to client
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-    res.send(pdfBuffer);
 
   } catch (error) {
-    console.error('Error generating PDF:', error);
-    res.status(500).json({ error: 'Failed to generate PDF', details: error.message });
+    console.error('Error generating newsletter:', error);
+    res.status(500).send(`
+      <html>
+        <body>
+          <h1>Error generating newsletter</h1>
+          <p>${error.message}</p>
+          <a href="/">Go back</a>
+        </body>
+      </html>
+    `);
   }
 });
 
-// Helper function to convert Google Docs paste to formatted HTML
-function parseFormattedText(text) {
-  if (!text) return '';
+// Generate newsletter as PDF using LaTeX
+app.post('/generate-pdf', upload.any(), async (req, res) => {
+  try {
+    // Parse the JSON data from the form
+    const data = JSON.parse(req.body.data);
+    const { metadata, articles } = data;
 
-  // Handle HTML entities
-  text = text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+    // Process uploaded photos and add them to articles
+    if (req.files && req.files.length > 0) {
+      req.files.forEach(file => {
+        // Extract article key from field name (e.g., "roshei_yeshiva_photo" -> "roshei_yeshiva")
+        const articleKey = file.fieldname.replace('_photo', '');
 
-  // Convert markdown-style formatting
-  text = text
-    .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>') // Bold + Italic
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>') // Bold
-    .replace(/\*(.+?)\*/g, '<em>$1</em>') // Italic
-    .replace(/__(.+?)__/g, '<u>$1</u>') // Underline
-    .replace(/\n\n/g, '</p><p>') // Paragraphs
-    .replace(/\n/g, '<br>'); // Line breaks
+        if (articles[articleKey]) {
+          // Save photo to temp directory and store path
+          const fs = require('fs');
+          const photoPath = path.join(__dirname, 'latex/temp', `${articleKey}_photo.${file.mimetype.split('/')[1]}`);
+          fs.writeFileSync(photoPath, file.buffer);
+          articles[articleKey].photoData = photoPath;
+        }
+      });
+    }
 
-  return `<p>${text}</p>`;
-}
+    // Process articles and format content
+    const processedArticles = processArticles(articles);
 
-// Process articles and add formatted content
-function processArticles(articles) {
-  const processed = {};
-
-  Object.keys(articles).forEach(key => {
-    const article = articles[key];
-    processed[key] = {
-      ...article,
-      formattedContent: parseFormattedText(article.content)
+    // Process metadata fields (dedication and ha'arah contact)
+    const processedMetadata = {
+      ...metadata,
+      formattedDedication: parseFormattedText(metadata.dedication),
+      formattedHaarahContact: parseFormattedText(metadata.haarahContact)
     };
-  });
 
-  return processed;
-}
+    // Generate LaTeX content
+    const latexContent = await generateLatexNewsletter({
+      metadata: processedMetadata,
+      articles: processedArticles
+    });
+
+    // Compile to PDF
+    const pdfPath = await compileLatex(latexContent, 'newsletter');
+
+    // Send PDF file
+    res.download(pdfPath, 'newsletter.pdf', (err) => {
+      if (err) {
+        console.error('Error sending PDF:', err);
+        res.status(500).send('Error generating PDF');
+      }
+    });
+
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+    res.status(500).send(`
+      <html>
+        <body>
+          <h1>Error generating PDF</h1>
+          <p>${error.message}</p>
+          <pre>${error.stack}</pre>
+          <a href="/">Go back</a>
+        </body>
+      </html>
+    `);
+  }
+});
 
 app.listen(PORT, () => {
-  console.log(`Einayim L'Torah Newsletter Generator running on http://localhost:${PORT}`);
+  console.log(`Einayim LaTorah Newsletter Generator running on http://localhost:${PORT}`);
 });

@@ -8,15 +8,15 @@
           <div class="form-row">
             <div class="form-group">
               <label for="volume">Volume</label>
-              <input type="text" id="volume" name="volume" placeholder="1" value="1">
+              <input type="text" id="volume" name="volume" placeholder="1">
             </div>
             <div class="form-group">
               <label for="issue">Issue</label>
-              <input type="text" id="issue" name="issue" placeholder="6" value="6">
+              <input type="text" id="issue" name="issue" placeholder="1">
             </div>
             <div class="form-group">
               <label for="parsha">Parsha</label>
-              <input type="text" id="parsha" name="parsha" placeholder="Lech Lecha" required>
+              <input type="text" id="parsha" name="parsha" placeholder="Parsha" value="Parsha">
             </div>
             <div class="form-group">
               <label for="year">Year</label>
@@ -49,8 +49,13 @@
           <div class="article-section">
             <h3>From the Roshei Yeshiva</h3>
             <div class="form-group">
-              <label for="roshei_yeshiva_author">Author (optional - defaults to Rabbi Daniel Stein)</label>
-              <input type="text" id="roshei_yeshiva_author" name="roshei_yeshiva_author" placeholder="Rabbi Daniel Stein">
+              <label for="roshei_yeshiva_author">Author</label>
+              <input type="text" id="roshei_yeshiva_author" name="roshei_yeshiva_author" placeholder="Rabbi 1">
+            </div>
+            <div class="form-group">
+              <label for="roshei_yeshiva_photo">Rabbi Photo (optional)</label>
+              <input type="file" id="roshei_yeshiva_photo" name="roshei_yeshiva_photo" accept="image/*">
+              <small style="color: #666; display: block; margin-top: 5px;">If no photo is uploaded, will default to RabbiReiss.png</small>
             </div>
             <div class="form-group">
               <label for="roshei_yeshiva_content">Article Content</label>
@@ -62,7 +67,7 @@
           <div class="article-section">
             <h3>Student Dvar Torah</h3>
             <div class="form-group">
-              <label for="student_dvar_author">Author (required for this section)</label>
+              <label for="student_dvar_author">Author</label>
               <input type="text" id="student_dvar_author" name="student_dvar_author" placeholder="Student Name">
             </div>
             <div class="form-group">
@@ -75,8 +80,13 @@
           <div class="article-section">
             <h3>Sichos Mussar</h3>
             <div class="form-group">
-              <label for="sichos_mussar_author">Author (optional - defaults to Rabbi Yaakov Feit)</label>
-              <input type="text" id="sichos_mussar_author" name="sichos_mussar_author" placeholder="Rabbi Yaakov Feit">
+              <label for="sichos_mussar_author">Author</label>
+              <input type="text" id="sichos_mussar_author" name="sichos_mussar_author" placeholder="Rabbi 2">
+            </div>
+            <div class="form-group">
+              <label for="sichos_mussar_photo">Rabbi Photo (optional)</label>
+              <input type="file" id="sichos_mussar_photo" name="sichos_mussar_photo" accept="image/*">
+              <small style="color: #666; display: block; margin-top: 5px;">If no photo is uploaded, will default to RabbiReiss.png</small>
             </div>
             <div class="form-group">
               <label for="sichos_mussar_content">Article Content</label>
@@ -88,8 +98,13 @@
           <div class="article-section">
             <h3>Halacha Corner</h3>
             <div class="form-group">
-              <label for="halacha_corner_author">Author (optional - defaults to Rabbi Aryeh Lebowitz)</label>
-              <input type="text" id="halacha_corner_author" name="halacha_corner_author" placeholder="Rabbi Aryeh Lebowitz">
+              <label for="halacha_corner_author">Author</label>
+              <input type="text" id="halacha_corner_author" name="halacha_corner_author" placeholder="Rabbi 3">
+            </div>
+            <div class="form-group">
+              <label for="halacha_corner_photo">Rabbi Photo (optional)</label>
+              <input type="file" id="halacha_corner_photo" name="halacha_corner_photo" accept="image/*">
+              <small style="color: #666; display: block; margin-top: 5px;">If no photo is uploaded, will default to RabbiReiss.png</small>
             </div>
             <div class="form-group">
               <label for="halacha_corner_content">Article Content</label>
@@ -101,8 +116,13 @@
           <div class="article-section">
             <h3>From the Shiur Yomi of</h3>
             <div class="form-group">
-              <label for="shiur_yomi_author">Author (optional - defaults to Rabbi Elchanan Adler)</label>
-              <input type="text" id="shiur_yomi_author" name="shiur_yomi_author" placeholder="Rabbi Elchanan Adler">
+              <label for="shiur_yomi_author">Author</label>
+              <input type="text" id="shiur_yomi_author" name="shiur_yomi_author" placeholder="Rabbi 4">
+            </div>
+            <div class="form-group">
+              <label for="shiur_yomi_photo">Rabbi Photo (optional)</label>
+              <input type="file" id="shiur_yomi_photo" name="shiur_yomi_photo" accept="image/*">
+              <small style="color: #666; display: block; margin-top: 5px;">If no photo is uploaded, will default to RabbiReiss.png</small>
             </div>
             <div class="form-group">
               <label for="shiur_yomi_content">Article Content</label>
@@ -114,8 +134,17 @@
           <div class="article-section">
             <h3>Min HaMesorah</h3>
             <div class="form-group">
-              <label for="min_hamesorah_author">Author (optional - defaults to current featured rabbi)</label>
-              <input type="text" id="min_hamesorah_author" name="min_hamesorah_author" placeholder="Rabbi Dr. Samuel Belkin">
+              <label for="min_hamesorah_author">Author</label>
+              <input type="text" id="min_hamesorah_author" name="min_hamesorah_author" placeholder="Rabbi 5">
+            </div>
+            <div class="form-group">
+              <label for="min_hamesorah_photo">Rabbi Photo (optional)</label>
+              <input type="file" id="min_hamesorah_photo" name="min_hamesorah_photo" accept="image/*">
+              <small style="color: #666; display: block; margin-top: 5px;">If no photo is uploaded, will default to RabbiReiss.png</small>
+            </div>
+            <div class="form-group">
+              <label for="min_hamesorah_bio">Author Biography</label>
+              <textarea id="min_hamesorah_bio" name="min_hamesorah_bio" placeholder="Paste author biography here..."></textarea>
             </div>
             <div class="form-group">
               <label for="min_hamesorah_content">Article Content</label>
@@ -124,19 +153,38 @@
           </div>
         </div>
 
-        <!-- Submit Button -->
+        <!-- Dedication Section -->
+        <div class="section">
+          <h2>Dedication</h2>
+          <div class="article-section">
+            <div class="form-group">
+              <label for="dedication_text">Dedication Text</label>
+              <textarea id="dedication_text" name="dedication_text" placeholder="Enter dedication text...">Dedicated in the memory of זאלי יעקב אלימלך בן שלמה זלמן ז״ל whose yahrzeit is on Parshas Vayeitzei.
+May his neshama have an aliya</textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer Information -->
+        <div class="section">
+          <h2>Footer Information</h2>
+          <div class="article-section">
+            <div class="form-group">
+              <label for="staff_list">Einayim LaTorah Staff</label>
+              <textarea id="staff_list" name="staff_list" placeholder="Enter staff names...">Yosef Chaim Reiss, Ruben Prawer, Ori Bach, Akiva Kra, Netanel Lederer, Binyamin Blachman, Yonatan Benchluch, Gavi Bienstock, Shai Berman, Eli Blumenthal, Moshe Chaifetz, Akiva Englard, Elchanan Fixler, Moishe Fixler, Ezra Frazer, Isaac Goldberg, Yosef Greenfeld, Abe Greenstein, Binyomin Jeger, Shmuel Katz, Dovid Kramer, Moshe Kranzler, Hillel Kuttler, Eli Lerman, Dan Lesserson, Ariel Lewittes, Tzvi Lieberman, Yedidya Lieberman, Yosef Markin, Dovid Meisels, Moshe Ochs, Yoni Shteigman, Yoni Silberstein, Yishai Sklaar, Nadav Sklar, Ezra Spero, Ilan Sugarman, Yaakov Tauby, Yonatan Zimilover</textarea>
+            </div>
+            <div class="form-group">
+              <label for="haarah_contact">Ha'arah Contact Information</label>
+              <textarea id="haarah_contact" name="haarah_contact" placeholder="Enter contact info...">Have a ha'arah? Want to contribute to Einayim LaTorah?
+Contact: Ruben Prawer: 516-477-4958, Yosef Chaim Reiss: 646-574-2165</textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Buttons -->
         <div class="btn-container">
-          <button type="submit" class="btn-print" id="printBtn">Generate PDF</button>
-          <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>Generating your newsletter PDF...</p>
-          </div>
-          <div class="success-message" id="successMessage">
-            PDF generated successfully! Your download should start automatically.
-          </div>
-          <div class="error-message" id="errorMessage">
-            Error generating PDF. Please try again.
-          </div>
+          <button type="submit" class="btn-print" id="printBtn">Preview Newsletter</button>
+          <button type="button" class="btn-print" id="pdfBtn" style="background: #2c6e8a; margin-left: 10px;">Generate PDF (LaTeX)</button>
         </div>
       </form>
     </div>

@@ -1,4 +1,4 @@
-# Quick Start Guide - Einayim L'Torah Newsletter Generator
+# Quick Start Guide - Einayim LaTorah Newsletter Generator
 
 ## Getting Started (First Time Setup)
 

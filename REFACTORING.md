@@ -46,7 +46,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Render main form
 app.get('/', (req, res) => {
-  res.render('index', { title: 'Einayim L\'Torah - Newsletter Generator' });
+  res.render('index', { title: 'Einayim LaTorah - Newsletter Generator' });
 });
 
 // Render newsletter for PDF
